@@ -1,0 +1,95 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BioWebsite | {% block page_title %}{% endblock %}</title>
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'home/img/favicon.ico' %}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!-- My custom CSS -->
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+    {% block page_level_css %}
+    {% endblock %}
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="{% static 'home/img/favicon.ico' %}" alt="icon BioWebsite" height=20px>
+            BioWebsite
+          </a>          
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link {% block nav-link-home %}{% endblock %}" aria-current="page" href="{% url 'home:home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% block nav-link-news %}{% endblock %}" href="{% url 'news:news' %}">News</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% block nav-link-blog %}{% endblock %}" href="{% url 'blog:blog_view' %}">Blog</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle {% block nav-link-tools %}{% endblock %}" data-bs-toggle="dropdown" href="{% url 'tools:seqcontent' %}" role="button" aria-expanded="false">Tools</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item {% block nav-item-randomdna %}{% endblock %}" href="{% url 'tools:randomdna' %}">Random DNA</a></li>
+                  <li><a class="dropdown-item {% block nav-item-seqcontent %}{% endblock %}" href="{% url 'tools:seqcontent' %}">Sequence Content</a></li>
+                  <li><a class="dropdown-item {% block nav-item-revcomp %}{% endblock %}" href="{% url 'tools:revcomp' %}">Reverse Complement</a></li>
+                  <li><a class="dropdown-item {% block nav-item-translation %}{% endblock %}" href="{% url 'tools:translation' %}">DNA Translation</a></li>
+                </ul>
+              </li>           
+            </ul>
+            <span class="navbar-text">
+              {% if request.user.is_authenticated %}
+                Hi, {{ request.user|title }} [<a href="{% url 'home:logout' %}">Logout</a>]
+              {% else %}
+                <a href="{% url 'home:login' %}">Login</a>
+              {% endif %}
+            </span>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock%}
+      </div>
+    </main>
+    <!-- /Page content -->
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-body-tertiary">
+      <div class="container">
+        <span class="text-body-secondary">© 2023 Company, Inc. · 
+          <a href="#">Facebook</a> · 
+          <a href="#">Twitter</a>
+        </span>
+      </div>
+    </footer>
+
+    <!-- Javascripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    {% block page_level_js %}
+    {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block page_title %}Tools{% endblock %}
+{% block nav-link-tools %}active{% endblock %}
+{% block nav-item-seqcontent %}active{% endblock %}
+
+{% block page_level_css %}
+<link rel="stylesheet" href="{% static 'tools/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>Tools <small style="color: gray;"> Sequence Content</small></h1><br>
+  <!-- Results -->
+  {% if results %}
+    <h3>Results</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Word</th>
+          <th>Count</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key, value in results.items %}
+          <tr>
+            <td>{{ key }}</td>
+            <td>{{ value.count }}</td>
+            <td>{{ value.percentage|floatformat:2 }}%</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a class="btn btn-secondary" href="{% url 'tools:seqcontent' %}">Restart</a>
+  <!-- /Results -->
+  {% else %}
+    <!-- Form -->
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Calculate</button>
+      <a class="btn btn-secondary" href="javascript:;" role="button" onclick="example()">Example</a>
+    </form>
+    <!-- /Form -->
+  {% endif %}
+{% endblock %}
+
+{% block page_level_js %}
+<script>
+  function example() {
+    document.getElementsByName("sequence")[0].value='TGCTAGATGACTGATAGATAGATGATAGTTTAGATAGAT';
+    document.getElementsByName("word_size")[0].value='3';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block page_title %}Tools{% endblock %}
+{% block nav-link-tools %}active{% endblock %}
+{% block nav-item-randomdna %}active{% endblock %}
+
+{% block page_level_css %}
+<link rel="stylesheet" href="{% static 'tools/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>Tools <small style="color: gray;"> Random DNA</small></h1><br>
+  <!-- Results -->
+  {% if results %}
+    <h3>Results</h3>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td width="20%">Sequence length: <b>{{ seq_len }}</b></td>
+        </tr>
+        <tr>
+          <td>{{ results }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <a class="btn btn-secondary" href="{% url 'tools:randomdna' %}">Restart</a>
+  <!-- /Results -->
+  {% else %}
+    <!-- Form -->
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Run</button>
+    </form>
+    <!-- /Form -->
+  {% endif %}
+{% endblock %}

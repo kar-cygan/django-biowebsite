@@ -1,0 +1,28 @@
+{% extends 'home/base.html' %}
+{% load static %}
+{% load my_markdown %}
+
+{% block page_title %}Blog{% endblock %}
+{% block nav-link-blog %}active{% endblock %}
+{% block page_level_css %}<link rel="stylesheet" href="{% static 'blog/css/style.css' %}">{% endblock %}
+
+{% block content %}
+  <h1>Blog</h1>
+  {% include 'blog/category_menu.html' %}
+  <div class="card">
+    <div class="card-body mb-2">
+        <h2 class="card-title"><b>{{ post_object.title }}</b></h2>
+        <p class="card-text"><small class="text-body-secondary">{{ post_object.date_create|timesince }} ago</small></p>
+        <p class="card-text">{{ post_object.body|markdown|safe }}</p>
+        <div class="card-footer text-muted">
+          <div class="row">
+            <div class="col-6">
+              Author: {{ post_object.author }}
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+
+  <br><br>
+{% endblock %}
